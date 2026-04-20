@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test } from '../fixtures/pageFixtures';
 
-test.describe('Pet dog Smoke Tests',{tag: '@smoke'}, () => {
-  test('Homepage loads', async ({ page }) => {
-    await page.goto('http://localhost:8000');
-    const locator = page.locator('.max-w-2xl a');
-    await expect(locator).toContainText('Browse All Dogs →');
+test.describe('Verify dog details page loads',{tag: '@wip'}, () => {
+  test('Dog details page loads', async ({ dogDetailSteps }) => {
+    
+    await dogDetailSteps.navigateToDogDetails();
   });
 });

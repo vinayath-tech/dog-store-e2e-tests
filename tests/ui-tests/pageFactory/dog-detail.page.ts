@@ -6,6 +6,7 @@ export class DogDetailPage {
   readonly cartLink: Locator;
   readonly heading: Locator;
   readonly price: Locator;
+  readonly browseDogsLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -13,10 +14,15 @@ export class DogDetailPage {
     this.cartLink = page.getByRole('link', { name: /Cart/ });
     this.heading = page.getByRole('heading', { level: 1 });
     this.price = page.locator('main').getByText(/£[\d,]+\.\d{2}/).first();
+    this.browseDogsLink = page.getByRole('link', { name: 'Browse Dogs' });
   }
 
-  async navigate(slug: string): Promise<void> {
-    await this.page.goto(`/dogs/${slug}`);
+  async navigate(slug?: string): Promise<void> {
+    if (slug) {
+      await this.page.goto(`/dogs/${slug}`);
+    } else {
+      await this.page.goto('/dogs');
+    }
   }
 
   async addToCart(): Promise<void> {
@@ -30,5 +36,13 @@ export class DogDetailPage {
       return parseInt(text ?? '0', 10);
     }
     return 0;
+  }
+
+  async clickDog(name?: string): Promise<void> {
+    if (name) {
+      await this.page.getByRole('link', { name: new RegExp(name) }).click();
+    } else {
+      await this.page.getByText('View Details →').first().click();
+    }
   }
 }
